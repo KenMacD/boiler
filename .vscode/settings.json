@@ -1,0 +1,8 @@
+{
+    "extensions.ignoreRecommendations": true,
+    "files.associations": {
+        "*.ino": "cpp"
+    },
+    "particle.firmwareVersion": "0.9.0",
+    "particle.targetPlatform": "xenon"
+}
