@@ -24,7 +24,7 @@ Zone::Zone(String name, int pin)
 
 
 Zone::~Zone() {
-  digitalWrite(m_pin, HIGH);
+  digitalWrite(m_pin, LOW);
 }
 
 
