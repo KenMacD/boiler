@@ -7,14 +7,19 @@
 #define MIN_OFF_TIME (2 * 60 * 1000UL)
 #define ON 1
 #define OFF 0
+#define UPDATE_NEED (10 * 60 * 1000UL)
 
 
+// TODO: handle boot temperature
 Zone::Zone(String name, int pin)
     : m_name(name),
       m_pin(pin),
 
       m_current_temp(MIN_TEMP),
+      m_last_current_temp(millis()),
+
       m_target_temp(MIN_TEMP),
+
       m_heating(false),
       m_last_state_change(millis())
 {
@@ -31,7 +36,18 @@ Zone::~Zone() {
 void Zone::loop() {
   system_tick_t now = millis();
   system_tick_t time_since_change = now - m_last_state_change;
+  system_tick_t time_since_update = now - m_last_current_temp;
+
+
   if (time_since_change < (m_heating ? MIN_ON_TIME : MIN_OFF_TIME)) {
+    return;
+  }
+
+  if (time_since_update > UPDATE_NEED) {
+    if (m_heating) {
+      Log.info("Zone %s not reporting, turning heat off", m_name.c_str());
+      turn_heat(OFF);
+    }
     return;
   }
 
@@ -60,6 +76,7 @@ void Zone::turn_heat(bool on) {
 void Zone::set_current_temp(float temperature) {
   // TODO: monitor overshoot
   Log.trace("Zone %s update current temperature %f", m_name.c_str(), temperature);
+  m_last_state_change = millis();
   m_current_temp = temperature;
 }
 

@@ -18,6 +18,8 @@ class Zone
     int m_pin;
 
     float m_current_temp;
+    system_tick_t m_last_current_temp;
+
     float m_target_temp;
 
     bool m_heating;
