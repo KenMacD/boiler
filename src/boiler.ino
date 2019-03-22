@@ -11,7 +11,7 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO, {
 #include "leak.h"
 #include "zone.h"
 
-Zone *zones;
+Zone *zones[ZONES];
 void handle_temperature(const char *, const char *);
 
 void setup_zone_ports() {
@@ -33,14 +33,13 @@ STARTUP( setup_zone_ports() );
 void setup() {
     leak_setup();
 
-    zones = (Zone *)calloc(ZONES, sizeof(Zone));
 
     // TODO: make these pins right
-    zones[0] = Zone("lvrm", D8);
-    zones[1] = Zone("ktch", D7);
-    zones[2] = Zone("bdrm", D6);
-    zones[3] = Zone("mstr", D5);
-    zones[4] = Zone("bsmt", D4);
+    zones[0] = new Zone("lvrm", D8);
+    zones[1] = new Zone("ktch", D7);
+    zones[2] = new Zone("bdrm", D6);
+    zones[3] = new Zone("mstr", D5);
+    zones[4] = new Zone("bsmt", D4);
 
     Particle.subscribe(TEMP_PREFIX, handle_temperature, MY_DEVICES);
 }
@@ -50,7 +49,7 @@ void loop() {
     leak_loop();
 
     for (int i = 0; i < ZONES; i++) {
-        zones[i].loop();
+        zones[i]->loop();
     }
 }
 
@@ -71,9 +70,9 @@ void handle_temperature(const char *const_event, const char *data) {
     Zone *zone = NULL;
     Log.trace("handle_temperature zone named %s", zone_name.c_str());
     for (int i = 0; i < ZONES; i++) {
-        if (zones[i].name() == zone_name) {
+        if (zones[i]->name() == zone_name) {
             Log.trace("handle_temperature zone matched %d", i);
-            zone = &zones[i];
+            zone = zones[i];
         }
     }
     if (zone == NULL) {
