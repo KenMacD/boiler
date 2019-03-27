@@ -42,6 +42,7 @@ void setup() {
     zones[4] = new Zone("bsmt", D4);
 
     Particle.subscribe(TEMP_PREFIX, handle_temperature, MY_DEVICES);
+    Mesh.subscribe(TEMP_PREFIX, handle_temperature);
 }
 
 
