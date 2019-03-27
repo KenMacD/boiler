@@ -53,6 +53,8 @@ void Zone::loop() {
   if (time_since_update > UPDATE_NEED) {
     if (m_heating) {
       Log.info("Zone %s not reporting, turning heat off", m_name.c_str());
+      Particle.publish(String::format("boiler/%s/timeout", m_name.c_str()),
+        String::format("%d > %d", time_since_update, UPDATE_NEED), PRIVATE);
       turn_heat(OFF);
     }
     return;
@@ -72,11 +74,18 @@ void Zone::loop() {
 
 
 void Zone::turn_heat(bool on) {
+  const char *on_str;
+  if (on) {
+    on_str = "on";
+  } else  {
+    on_str = "off";
+  }
   m_last_state_change = millis();
+  Particle.publish(String::format("boiler/%s/heating", m_name.c_str()),
+              on_str, PRIVATE);
   Log.trace("Zone %s writing %d to pin %d", m_name.c_str(), !on, m_pin);
   digitalWrite(m_pin, !on); // Low activates
   m_heating = on;
-  // TODO: publish message
 }
 
 
