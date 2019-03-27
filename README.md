@@ -1,5 +1,3 @@
-
-
 # Boiler
 
 A Particle project for controlling my 5 zone boiler.
@@ -15,12 +13,11 @@ A Particle project for controlling my 5 zone boiler.
 
  * zone: handle one heating zone
  * leak: raise an alert if the resistance between two wires drops
- * tinker: Particle's tinker code, to allow manual flipping of pins
 
 ## Useful commands
 
-Compile cloud: `particle compile --saveTo boiler.bin xenon`
-Flash local: `particle flash --serial boiler`
-Flash cloud: `particle flash boiler boiler.bin`
-Monitor serial: `particle serial monitor`
-Publish temperature for testing: `particle publish "temperature/bdrm/is" "25.0"`
+ * Compile cloud: `particle compile --saveTo boiler.bin xenon`
+ * Flash local: `particle flash --serial boiler`
+ * Flash cloud: `particle flash boiler boiler.bin`
+ * Monitor serial: `particle serial monitor`
+ * Publish temperature for testing: `particle publish "temperature/bdrm/is" "25.0"`
