@@ -25,6 +25,11 @@ Zone::Zone(String name, int pin)
 {
   pinMode(m_pin, OUTPUT);
   digitalWrite(m_pin, HIGH);
+
+  Particle.variable(String::format("%s_heat", name.c_str()).c_str(), &m_heating, BOOLEAN);
+  Particle.variable(String::format("%s_temp", name.c_str()).c_str(), &m_current_temp, DOUBLE);
+  Particle.variable(String::format("%s_goal", name.c_str()).c_str(), &m_target_temp, DOUBLE);
+  Particle.publish("variable-registered", String::format("zone-%s", name.c_str()), PRIVATE);
 }
 
 
