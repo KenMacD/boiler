@@ -83,7 +83,7 @@ void Zone::turn_heat(bool on) {
 void Zone::set_current_temp(float temperature) {
   // TODO: monitor overshoot
   Log.trace("Zone %s update current temperature %f", m_name.c_str(), temperature);
-  m_last_state_change = millis();
+  m_last_current_temp = millis();
   m_current_temp = temperature;
 }
 
