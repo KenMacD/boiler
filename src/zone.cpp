@@ -34,10 +34,12 @@ Zone::~Zone() {
 
 
 void Zone::loop() {
-  system_tick_t now = millis();
-  system_tick_t time_since_change = now - m_last_state_change;
-  system_tick_t time_since_update = now - m_last_current_temp;
-
+  system_tick_t now, time_since_change, time_since_update;
+  SINGLE_THREADED_BLOCK() {
+    now = millis();
+    time_since_change = now - m_last_state_change;
+    time_since_update = now - m_last_current_temp;
+  }
 
   if (time_since_change < (m_heating ? MIN_ON_TIME : MIN_OFF_TIME)) {
     return;
