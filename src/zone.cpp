@@ -1,7 +1,7 @@
 
 #include "zone.h"
 
-#define TEMP_RANGE 1.0
+#define HYSTERESIS 0.5
 #define MIN_TEMP 5.0
 #define MIN_ON_TIME (2 * 60 * 1000UL)
 #define MIN_OFF_TIME (2 * 60 * 1000UL)
@@ -59,12 +59,12 @@ void Zone::loop() {
   }
 
   if (m_heating) {
-    if (m_current_temp > m_target_temp + TEMP_RANGE) {
+    if (m_current_temp > m_target_temp + HYSTERESIS) {
       Log.info("Zone %s turning heat off", m_name.c_str());
       turn_heat(OFF);
     }
   }
-  else if (m_current_temp < m_target_temp - TEMP_RANGE) {
+  else if (m_current_temp < m_target_temp - HYSTERESIS) {
     Log.info("Zone %s turning heat on.", m_name.c_str());
     turn_heat(ON);
   }
