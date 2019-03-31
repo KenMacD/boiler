@@ -29,6 +29,7 @@ Zone::Zone(String name, int pin)
   Particle.variable(String::format("%s_heat", name.c_str()).c_str(), &m_heating, BOOLEAN);
   Particle.variable(String::format("%s_temp", name.c_str()).c_str(), &m_current_temp, DOUBLE);
   Particle.variable(String::format("%s_goal", name.c_str()).c_str(), &m_target_temp, DOUBLE);
+  Particle.function(String::format("%s_set", name.c_str()).c_str(), &Zone::set_target_temp_cloud, this);
   Particle.publish("variable-registered", String::format("zone-%s", name.c_str()), PRIVATE);
 }
 
@@ -97,8 +98,17 @@ void Zone::set_current_temp(float temperature) {
 }
 
 
-void Zone::set_target_temp(float temperature) {
+int Zone::set_target_temp(float temperature) {
   Log.trace("Zone %s update target temperature %f", m_name.c_str(), temperature);
   m_target_temp = temperature;
   // TODO: publish message?
+  return 0;
+}
+
+int Zone::set_target_temp_cloud(String temperature) {
+    float temp = temperature.toFloat();
+    if (temp == 0) {
+        return -1;
+    }
+    return set_target_temp(temp);
 }

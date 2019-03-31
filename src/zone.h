@@ -11,7 +11,10 @@ class Zone
     const String name() { return m_name; }
     void loop();
     void set_current_temp(float temperature);
-    void set_target_temp(float temperature);
+    int set_target_temp(float temperature);
+
+    // Particle function:
+    int set_target_temp_cloud(String temperature);
 
   private:
     String m_name;
