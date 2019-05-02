@@ -1,6 +1,6 @@
 /* Boiler controller */
 
-#include <application.h>
+#include <Particle.h>
 
 #define ZONES 5
 #define TEMP_PREFIX "temperature/"
