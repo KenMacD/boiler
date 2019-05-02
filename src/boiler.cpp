@@ -73,13 +73,13 @@ void handle_temperature(const char *const_event, const char *data) {
     Zone *zone = NULL;
     Log.trace("handle_temperature zone named %s", zone_name.c_str());
     for (int i = 0; i < ZONES; i++) {
-        if (zones[i]->name() == zone_name) {
+        if (strncmp(zones[i]->name(), zone_name.c_str(), 4) == 0) {
             Log.trace("handle_temperature zone matched %d", i);
             zone = zones[i];
         }
     }
     if (zone == NULL) {
-        Particle.publish("boiler/exception/bad_zone", const_event, PRIVATE);
+        Particle.publish("boiler/exception/bad_zone", zone_name, PRIVATE);
     }
 
     float temp = strtof(data, NULL);

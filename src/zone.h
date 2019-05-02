@@ -8,7 +8,7 @@ class Zone
     Zone(String name, int pin);
     ~Zone();
 
-    const String name() { return m_name; }
+    const char *name() { return m_name; }
     void loop();
     void set_current_temp(float temperature);
     int set_target_temp(float temperature);
@@ -17,7 +17,7 @@ class Zone
     int set_target_temp_cloud(String temperature);
 
   private:
-    String m_name;
+    char m_name[16];
     int m_pin;
 
     double m_current_temp;
