@@ -1,10 +1,10 @@
 
 #include "zone.h"
 
-#define HYSTERESIS 0.5
+#define HYSTERESIS 0.3
 #define MIN_TEMP 5.0
-#define MIN_ON_TIME (2 * 60 * 1000UL)
-#define MIN_OFF_TIME (2 * 60 * 1000UL)
+#define MIN_ON_TIME (30 * 1000UL)
+#define MIN_OFF_TIME (30 * 1000UL)
 #define ON 1
 #define OFF 0
 #define UPDATE_NEED (10 * 60 * 1000UL)
