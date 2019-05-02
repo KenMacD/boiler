@@ -37,8 +37,8 @@ void setup() {
 
 
     // TODO: make these pins right
-    zones[0] = new Zone("lvrm", D8);
-    zones[1] = new Zone("ktch", D7);
+    zones[0] = new Zone("fmrm", D8);
+    zones[1] = new Zone("lvrm", D7);
     zones[2] = new Zone("bdrm", D6);
     zones[3] = new Zone("mstr", D5);
     zones[4] = new Zone("bsmt", D4);
