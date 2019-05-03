@@ -15,6 +15,8 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO, {
 
 Zone *zones[ZONES];
 void handle_temperature(const char *, const char *);
+int update_blockers = 0;
+void block_updates(bool);
 
 void setup_zone_ports() {
    pinMode(D8, OUTPUT);
@@ -37,11 +39,11 @@ void setup() {
 
 
     // TODO: make these pins right
-    zones[0] = new Zone("fmrm", D8);
-    zones[1] = new Zone("lvrm", D7);
-    zones[2] = new Zone("bdrm", D6);
-    zones[3] = new Zone("mstr", D5);
-    zones[4] = new Zone("bsmt", D4);
+    zones[0] = new Zone("fmrm", D8, block_updates);
+    zones[1] = new Zone("lvrm", D7, block_updates);
+    zones[2] = new Zone("bdrm", D6, block_updates);
+    zones[3] = new Zone("mstr", D5, block_updates);
+    zones[4] = new Zone("bsmt", D4, block_updates);
 
     Particle.subscribe(TEMP_PREFIX, handle_temperature, MY_DEVICES);
     Mesh.subscribe(TEMP_PREFIX, handle_temperature);
@@ -90,5 +92,21 @@ void handle_temperature(const char *const_event, const char *data) {
     } else if (verb == "set") {
         Log.trace("handle_temperature set target to %f", temp);
         zone->set_target_temp(temp);
+    }
+}
+
+void block_updates(bool set) {
+    if (set) {
+        update_blockers++;
+        System.disableUpdates();
+    } else {
+        if (update_blockers == 0) {
+            Particle.publish("boiler/exception/blockzero", PRIVATE);
+        } else {
+            update_blockers--;
+            if (update_blockers == 0) {
+                System.enableUpdates();
+            }
+        }
     }
 }

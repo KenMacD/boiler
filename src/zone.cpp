@@ -11,8 +11,9 @@
 
 
 // TODO: handle boot temperature
-Zone::Zone(String name, int pin)
+Zone::Zone(String name, int pin, void (*block_updates)(bool))
     : m_pin(pin),
+      m_block_updates(block_updates),
 
       m_current_temp(MIN_TEMP),
       m_last_current_temp(millis()),
@@ -83,6 +84,7 @@ void Zone::turn_heat(bool on) {
     on_str = "off";
   }
   m_last_state_change = millis();
+  m_block_updates(on);
   Particle.publish(String::format("boiler/%s/heating", m_name),
               on_str, PRIVATE);
   Log.trace("Zone %s writing %d to pin %d", m_name, !on, m_pin);

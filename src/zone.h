@@ -5,7 +5,7 @@
 class Zone
 {
   public:
-    Zone(String name, int pin);
+    Zone(String name, int pin, void (*block_updates)(bool));
     ~Zone();
 
     const char *name() { return m_name; }
@@ -19,6 +19,7 @@ class Zone
   private:
     char m_name[16];
     int m_pin;
+    void (*m_block_updates)(bool);
 
     double m_current_temp;
     system_tick_t m_last_current_temp;
