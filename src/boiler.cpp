@@ -12,6 +12,7 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO, {
 
 #include "leak.h"
 #include "zone.h"
+#include "influx.h"
 
 Zone *zones[ZONES];
 void handle_temperature(const char *, const char *);
@@ -45,6 +46,8 @@ void setup() {
     zones[3] = new Zone("mstr", D5, block_updates);
     zones[4] = new Zone("bsmt", D4, block_updates);
 
+    influx_setup(zones, 5);
+
     Particle.subscribe(TEMP_PREFIX, handle_temperature, MY_DEVICES);
     Mesh.subscribe(TEMP_PREFIX, handle_temperature);
 }
@@ -56,6 +59,7 @@ void loop() {
     for (int i = 0; i < ZONES; i++) {
         zones[i]->loop();
     }
+    influx_loop();
 }
 
 

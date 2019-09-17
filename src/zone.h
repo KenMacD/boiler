@@ -9,6 +9,9 @@ class Zone
     ~Zone();
 
     const char *name() { return m_name; }
+    boolean is_heating() const { return m_heating; }
+    double target_temp() const { return m_target_temp; }
+
     void loop();
     void set_current_temp(float temperature);
     int set_target_temp(float temperature);
