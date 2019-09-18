@@ -34,8 +34,12 @@ void setup_zone_ports() {
 }
 STARTUP( setup_zone_ports() );
 
+int do_reset(String);
+
 
 void setup() {
+    Particle.function("reset", do_reset);
+
     leak_setup();
 
 
@@ -113,4 +117,9 @@ void block_updates(bool set) {
             }
         }
     }
+}
+
+int do_reset(String _unused) {
+    System.reset();
+    return 0;
 }
