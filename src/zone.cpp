@@ -18,6 +18,7 @@ Zone::Zone(String name, int pin, int eeprom_addr, void (*block_updates)(bool))
 
       m_current_temp(MIN_TEMP),
       m_last_current_temp(millis()),
+      m_received_current_temp(false),
 
       m_target_temp(MIN_TEMP),
 
@@ -53,6 +54,10 @@ void Zone::loop() {
   }
 
   if (time_since_change < (m_heating ? MIN_ON_TIME : MIN_OFF_TIME)) {
+    return;
+  }
+
+  if (m_received_current_temp == false) {
     return;
   }
 
@@ -101,6 +106,7 @@ void Zone::set_current_temp(float temperature) {
   Log.trace("Zone %s update current temperature %f", m_name, temperature);
   m_last_current_temp = millis();
   m_current_temp = temperature;
+  m_received_current_temp = true;
 }
 
 

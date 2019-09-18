@@ -27,6 +27,7 @@ class Zone
 
     double m_current_temp;
     system_tick_t m_last_current_temp;
+    bool m_received_current_temp;
 
     double m_target_temp;
 
