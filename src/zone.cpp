@@ -11,8 +11,9 @@
 
 
 // TODO: handle boot temperature
-Zone::Zone(String name, int pin, void (*block_updates)(bool))
+Zone::Zone(String name, int pin, int eeprom_addr, void (*block_updates)(bool))
     : m_pin(pin),
+      m_eeprom_addr(eeprom_addr),
       m_block_updates(block_updates),
 
       m_current_temp(MIN_TEMP),
@@ -32,7 +33,9 @@ Zone::Zone(String name, int pin, void (*block_updates)(bool))
   Particle.variable((m_name + String("_temp")).c_str(), &m_current_temp, DOUBLE);
   Particle.variable((m_name + String("_goal")).c_str(), &m_target_temp, DOUBLE);
   Particle.function((m_name + String("_set")).c_str(), &Zone::set_target_temp_cloud, this);
-  Particle.publish("variable-registered", (String("zone-") + m_name).c_str(), PRIVATE);
+
+  // Load the last set target temperature:
+  EEPROM.get(m_eeprom_addr, m_target_temp);
 }
 
 
@@ -104,6 +107,7 @@ void Zone::set_current_temp(float temperature) {
 int Zone::set_target_temp(float temperature) {
   Log.trace("Zone %s update target temperature %f", m_name, temperature);
   m_target_temp = temperature;
+  EEPROM.put(m_eeprom_addr, m_target_temp);
   // TODO: publish message?
   return 0;
 }

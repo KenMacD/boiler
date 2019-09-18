@@ -44,11 +44,11 @@ void setup() {
 
 
     // TODO: make these pins right
-    zones[0] = new Zone("fmrm", D8, block_updates);
-    zones[1] = new Zone("lvrm", D7, block_updates);
-    zones[2] = new Zone("bdrm", D6, block_updates);
-    zones[3] = new Zone("mstr", D5, block_updates);
-    zones[4] = new Zone("bsmt", D4, block_updates);
+    zones[0] = new Zone("fmrm", D8, 1*64, block_updates);
+    zones[1] = new Zone("lvrm", D7, 2*64, block_updates);
+    zones[2] = new Zone("bdrm", D6, 3*64, block_updates);
+    zones[3] = new Zone("mstr", D5, 4*64, block_updates);
+    zones[4] = new Zone("bsmt", D4, 5*64, block_updates);
 
     influx_setup(zones, 5);
 
